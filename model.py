@@ -4,6 +4,9 @@ from transformers import BertModel
 
 
 class SentenceBERT(nn.Module):
+    """
+    Siamese 结构，两个句子分别输入BERT, [CLS] sen_a [SEP], [CLS] sen_b [SEP]
+    """
     def __init__(self, config):
         super(SentenceBERT, self).__init__()
         self.config = config
@@ -41,6 +44,9 @@ class SentenceBERT(nn.Module):
 
 
 class BertClassifier(nn.Module):
+    """
+    两个句子拼在一起输入BERT: [CLS] sen_a [SEP] sen_b [SEP]
+    """
     def __init__(self, config):
         super(BertClassifier, self).__init__()
         self.config = config

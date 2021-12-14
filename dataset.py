@@ -5,6 +5,9 @@ from preprocess import read_sen_pairs
 
 
 class SentencePairDataset(Dataset):
+    """
+    两个句子分别输入BERT, [CLS] sen_a [SEP], [CLS] sen_b [SEP]
+    """
     def __init__(self, sen_a_list, sen_b_list, labels, config):
         super(SentencePairDataset, self).__init__()
         self.sen_a_list = sen_a_list
@@ -41,6 +44,9 @@ class SentencePairDataset(Dataset):
 
 
 class SingleBertDataset(Dataset):
+    """
+    两个句子拼在一起输入BERT: [CLS] sen_a [SEP] sen_b [SEP]
+    """
     def __init__(self, sen_a_list, sen_b_list, labels, config):
         super(SingleBertDataset, self).__init__()
         self.config = config
