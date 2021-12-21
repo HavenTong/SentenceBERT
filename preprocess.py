@@ -12,4 +12,5 @@ def read_sen_pairs(file):
     return sen_a_list, sen_b_list, labels
 
 
-read_sen_pairs('data/train_data.tsv')
+if __name__ == '__main__':
+    read_sen_pairs('data/train_data.tsv')

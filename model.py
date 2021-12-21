@@ -21,7 +21,8 @@ class SentenceBERT(nn.Module):
                 sen_a_attention_mask,
                 sen_b_input_ids,
                 sen_b_token_type_ids,
-                sen_b_attention_mask):
+                sen_b_attention_mask,
+                inference=False):
         sen_a_bert_outputs = self.bert(
             input_ids=sen_a_input_ids,
             token_type_ids=sen_a_token_type_ids,
@@ -37,6 +38,12 @@ class SentenceBERT(nn.Module):
 
         sen_a_pooling, sen_b_pooling = sen_a_bert_output.mean(dim=1), sen_b_bert_output.mean(dim=1)
         # (batch_size, hidden_size)
+
+        if inference:
+            sen_a_norm = torch.norm(sen_a_pooling, dim=1)
+            sen_b_norm = torch.norm(sen_b_pooling, dim=1)
+            similarity = (sen_a_pooling * sen_b_pooling).sum(dim=1) / (sen_a_norm * sen_b_norm)
+            return similarity
 
         hidden = torch.cat([sen_a_pooling, sen_b_pooling, torch.abs(sen_a_pooling - sen_b_pooling)], dim=1)
 
