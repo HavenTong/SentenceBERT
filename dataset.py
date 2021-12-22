@@ -81,6 +81,7 @@ if __name__ == '__main__':
     dataset = SingleBertDataset(sen_b_list, sen_b_list, labels, config)
     print(dataset[0])
     print(dataset[0].keys())
+    print((dataset[0]['attention_mask'] != 0).sum(dim=0))
 
 
 

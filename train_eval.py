@@ -67,9 +67,9 @@ def similarity_accuracy(data_loader, model, device):
 
             label = data.pop('label')
             outputs = model(**data, inference=True)
-            print(outputs)
-            print(label)
-            outputs = (outputs > 0).long()
+            # print(outputs)
+            # print(label)
+            outputs = (outputs > 0.5).long()
             assert outputs.size() == label.size()
             correct += (outputs == label).sum().item()
             total += outputs.size(0)

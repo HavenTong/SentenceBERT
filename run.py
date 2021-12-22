@@ -5,10 +5,10 @@ from torch.utils.data import DataLoader
 import logging
 from config import Config
 from preprocess import read_sen_pairs
-from model import SentenceBERT, BertClassifier
+from model import SentenceBERT, BertClassifier, RegressionSentenceBERT
 from dataset import SentencePairDataset, SingleBertDataset
 from train_eval import train, evaluate, accuracy, similarity_accuracy
-import os, argparse
+import os, argparse, datetime
 
 
 def set_args():
@@ -48,8 +48,14 @@ if __name__ == '__main__':
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+    # SentenceBERT
     model = SentenceBERT(config).to(device)
     loss = nn.CrossEntropyLoss()
+
+    # Regression SentenceBERT
+    # model = RegressionSentenceBERT(config).to(device)
+    # loss = nn.MSELoss()
+
     optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
 
     logger.info("START")
@@ -58,7 +64,7 @@ if __name__ == '__main__':
     for epoch in range(config.num_epochs):
         train_loss = train(train_loader, model, loss, optimizer, device)
         logger.info(f"Epoch: [{epoch + 1} / {config.num_epochs}]  | Train Loss: {train_loss}")
-        acc = accuracy(test_loader, model, device)
+        acc = similarity_accuracy(test_loader, model, device)
         logger.info(f"Epoch: [{epoch + 1} / {config.num_epochs}] | Test ACC: {acc}")
         if acc > best_accuracy:
             best_accuracy = acc
@@ -68,13 +74,10 @@ if __name__ == '__main__':
             torch.save(model.state_dict(), best_model_name)
             logger.info(f"Model saved in {best_model_name} @Epoch {epoch + 1}")
 
-    # best_model_name = 'sbert_16_3_epoch_3.pth'
+    # best_model_name = 'sbert_mean_16_5_epoch_5.pth'
     model.load_state_dict(torch.load(best_model_name))
-    acc = accuracy(test_loader, model, device)
+    acc = similarity_accuracy(test_loader, model, device)
     print(f"Best Model '{best_model_name}' | Test ACC: {acc}")
-    logger.info(f"Best Model '{best_model_name}' | Test ACC: {acc}")
-
-
-
+    # logger.info(f"Best Model '{best_model_name}' | Test ACC: {acc}")
 
 

@@ -17,8 +17,8 @@ class Config:
         self.num_classes = 2
         self.dropout_rate = 0.3
         self.learning_rate = lr
-        self.save_path = f"macbert_{self.batch_size}_{self.num_epochs}.pth"
-        self.logging_file_name = f'macbert_logging_{self.batch_size}_{self.num_epochs}.log'
+        self.save_path = f"regression_sbert_mean_{self.batch_size}_{self.num_epochs}.pth"
+        self.logging_file_name = f'regression_sbert_mean_logging_{self.batch_size}_{self.num_epochs}.log'
 
 
 if __name__ == '__main__':

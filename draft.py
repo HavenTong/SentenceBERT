@@ -1,4 +1,6 @@
 import argparse
+import torch
+import torch.nn.functional as F
 
 
 def test(a, b, c=3):
@@ -19,5 +21,8 @@ def set_args():
 
 
 if __name__ == '__main__':
-    d = {'a': 1, 'b': 2}
-    test(**d, c=5)
+    # d = {'a': 1, 'b': 2}
+    # test(**d, c=5)
+    a = torch.tensor([[1., 0., 1.], [0., 1., 1.]])
+    b = torch.tensor([[-1., 1., 0.], [1., 1., 0.]])
+    print(F.cosine_similarity(a, b))
