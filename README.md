@@ -7,6 +7,10 @@
 - pytorch 1.8.2
 - 数据文件需要放在 `./data` 目录下，预训练语言模型需要放在 `./{PLM_NAME}` 目录下，这里使用的是 [MacBERT](https://github.com/ymcui/MacBERT)
 
+### Dataset
+
+数据集来自于该博客中整理的中文竞赛数据集 https://zhuanlan.zhihu.com/p/373253456
+
 ### Instruction
 
 - `config.py`

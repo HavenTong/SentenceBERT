@@ -9,20 +9,24 @@ from model import SentenceBERT, BertClassifier, RegressionSentenceBERT
 from dataset import SentencePairDataset, SingleBertDataset
 from train_eval import train, evaluate, accuracy, similarity_accuracy
 import os, argparse, datetime
+from pprint import pprint
+from utils import seed_everything
 
 
 def set_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch_size', type=int, default=16)
-    parser.add_argument('--num_epochs', type=int, default=5)
+    parser.add_argument('--num_epochs', type=int, default=10)
     parser.add_argument('--lr', type=float, default=2e-5)
     return parser.parse_args()
 
 
 if __name__ == '__main__':
+    seed_everything()
     args = set_args()
     print(args)
     config = Config(**vars(args))
+    pprint(vars(config))
     logger = logging.getLogger(__name__)
     logging.basicConfig(
         filename=config.logging_file_name,
@@ -35,7 +39,7 @@ if __name__ == '__main__':
     train_sen_a_list, train_sen_b_list, train_labels = read_sen_pairs(config.train_path)
     test_sen_a_list, test_sen_b_list, test_labels = read_sen_pairs(config.test_path)
 
-    # Single BERT
+    # Single BERT Dataset
     # train_set = SingleBertDataset(train_sen_a_list, train_sen_b_list, train_labels, config)
     # test_set = SingleBertDataset(test_sen_a_list, test_sen_b_list, test_labels, config)
 
@@ -50,11 +54,8 @@ if __name__ == '__main__':
 
     # SentenceBERT
     model = SentenceBERT(config).to(device)
-    loss = nn.CrossEntropyLoss()
 
-    # Regression SentenceBERT
-    # model = RegressionSentenceBERT(config).to(device)
-    # loss = nn.MSELoss()
+    loss = nn.CrossEntropyLoss()
 
     optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
 
@@ -64,7 +65,7 @@ if __name__ == '__main__':
     for epoch in range(config.num_epochs):
         train_loss = train(train_loader, model, loss, optimizer, device)
         logger.info(f"Epoch: [{epoch + 1} / {config.num_epochs}]  | Train Loss: {train_loss}")
-        acc = similarity_accuracy(test_loader, model, device)
+        acc = accuracy(test_loader, model, device)
         logger.info(f"Epoch: [{epoch + 1} / {config.num_epochs}] | Test ACC: {acc}")
         if acc > best_accuracy:
             best_accuracy = acc
@@ -76,8 +77,8 @@ if __name__ == '__main__':
 
     # best_model_name = 'sbert_mean_16_5_epoch_5.pth'
     model.load_state_dict(torch.load(best_model_name))
-    acc = similarity_accuracy(test_loader, model, device)
-    print(f"Best Model '{best_model_name}' | Test ACC: {acc}")
-    # logger.info(f"Best Model '{best_model_name}' | Test ACC: {acc}")
+    acc = accuracy(test_loader, model, device)
+    # print(f"Best Model '{best_model_name}' | Test ACC: {acc}")
+    logger.info(f"Best Model '{best_model_name}' | Test ACC: {acc}")
 
 

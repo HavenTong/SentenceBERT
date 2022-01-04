@@ -3,7 +3,7 @@ import os
 
 
 class Config:
-    def __init__(self, batch_size=16, num_epochs=5, lr=2e-5):
+    def __init__(self, batch_size=16, num_epochs=10, lr=2e-5):
         self.current_path = os.path.dirname(__file__)
         self.train_path = os.path.join(self.current_path, 'data/train_data.tsv')
         self.test_path = os.path.join(self.current_path, 'data/test_data.tsv')
@@ -17,8 +17,8 @@ class Config:
         self.num_classes = 2
         self.dropout_rate = 0.3
         self.learning_rate = lr
-        self.save_path = f"regression_sbert_mean_{self.batch_size}_{self.num_epochs}.pth"
-        self.logging_file_name = f'regression_sbert_mean_logging_{self.batch_size}_{self.num_epochs}.log'
+        self.save_path = f"sbert_mean_{self.batch_size}_{self.num_epochs}.pth"
+        self.logging_file_name = f'sbert_mean_logging_{self.batch_size}_{self.num_epochs}.log'
 
 
 if __name__ == '__main__':
