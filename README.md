@@ -1,6 +1,6 @@
 # SentenceBERT
 
-![image-20211214101755686](https://tva1.sinaimg.cn/large/008i3skNgy1gxd59e7d5cj31tp0u0q8y.jpg)
+![image-20220105155954331](https://tva1.sinaimg.cn/large/008i3skNgy1gy2urzphpmj30pe0cq75s.jpg)
 
 ### Requirement
 
