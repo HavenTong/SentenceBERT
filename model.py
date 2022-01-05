@@ -44,9 +44,6 @@ class SentenceBERT(nn.Module):
         # (batch_size, hidden_size)
 
         if inference:
-            # sen_a_norm = torch.norm(sen_a_pooling, dim=1)
-            # sen_b_norm = torch.norm(sen_b_pooling, dim=1)
-            # similarity = (sen_a_pooling * sen_b_pooling).sum(dim=1) / (sen_a_norm * sen_b_norm)
             similarity = F.cosine_similarity(sen_a_pooling, sen_b_pooling, dim=1)
             return similarity
 
